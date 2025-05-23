@@ -64,12 +64,6 @@ fun NewsFeedScreen(
                 .fillMaxSize()
                 .padding(paddingValue)
         ){
-            val errorText = if (connectivityStatus == ConnectivityObserver.Status.Unavailable ||
-                connectivityStatus == ConnectivityObserver.Status.Lost) {
-                "No Internet"
-            } else {
-                "Error in Loading News"
-            }
             when (newsState) {
                 is NewsScreenStates.LOADING -> {
                     // Show loading indicator
@@ -79,8 +73,9 @@ fun NewsFeedScreen(
                 }
 
                 is NewsScreenStates.ERROR -> {
+                    //show error message
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(text = errorText, color = Color.Red)
+                        Text(text = "Error in Loading News", color = Color.Red)
                     }
                 }
 

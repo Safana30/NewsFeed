@@ -23,7 +23,7 @@ class NewsFeedViewModel @Inject constructor(
     private val connectivityObserver: NetworkConnectivityObserver,
 ): ViewModel() {
 
-    private val _newsData = MutableStateFlow<NewsScreenStates>(NewsScreenStates.LOADING)
+    private val _newsData = MutableStateFlow<NewsScreenStates>(NewsScreenStates.ERROR("No Data Available"))
     val newsData : StateFlow<NewsScreenStates> =_newsData.asStateFlow()
 
     private val _connectivityStatus: MutableStateFlow<ConnectivityObserver.Status> =
@@ -44,9 +44,12 @@ class NewsFeedViewModel @Inject constructor(
                         newsRepository.setPeriodicWorkRequest()
                     }
                     else -> {
-                        _newsData.value = NewsScreenStates.LOADING
                         newsRepository.getNewsFromDb().collect { newsList ->
-                            _newsData.value = NewsScreenStates.SUCCESS(newsList)
+                            if (newsList.isNotEmpty()) {
+                                _newsData.value = NewsScreenStates.SUCCESS(newsList)
+                            } else {
+                                _newsData.value = NewsScreenStates.ERROR("No offline data available")
+                            }
                         }
                     }
                 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -17,9 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.newsfeed.R
 import com.example.newsfeed.data.apiservice.apimodels.Article
 import com.example.newsfeed.domain.models.ArticleBaseModel
 import com.example.newsfeed.presentation.SharedViewModel
@@ -65,15 +71,15 @@ fun DetailContent(article: ArticleBaseModel) {
         article.urlToImage?.let {
             AsyncImage(
                 model = it,
-                contentDescription = article.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
+                placeholder = painterResource(R.drawable.placeholder),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxWidth().heightIn(50.dp).clip(RectangleShape)
             )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = article.title ?: "No Title", style = MaterialTheme.typography.titleLarge)
+        Text(text = article.title, style = MaterialTheme.typography.titleLarge)
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "By ${article.author ?: "Unknown"}",

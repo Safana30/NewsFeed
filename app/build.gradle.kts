@@ -37,6 +37,27 @@ android {
     hilt {
         enableAggregatingTask = false
     }
+
+    flavorDimensions += "default"
+
+    productFlavors {
+        create("free") {
+            dimension = "default"
+            applicationIdSuffix = ".free"
+            versionNameSuffix = "-free"
+            resValue ("string", "app_name", "NewsFeed Free")
+            buildConfigField("boolean", "SHOW_ADS", "true")
+        }
+        create("premium") {
+            dimension = "default"
+            applicationIdSuffix = ".premium"
+            versionNameSuffix = "-premium"
+            resValue ("string", "app_name", "NewsFeed Pro")
+            buildConfigField("boolean", "SHOW_ADS", "false")
+        }
+    }
+
+
     buildTypes {
         release {
             isMinifyEnabled = false

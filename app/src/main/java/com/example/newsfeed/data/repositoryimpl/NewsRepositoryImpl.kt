@@ -39,15 +39,12 @@ class NewsRepositoryImpl @Inject constructor(
         return apiInterface.getNews(query = "tesla", from = fromDate)
     }
 
-    /*override suspend fun getNewsFromDb(): ArticleBaseModel {
-        return newsDao.getNews().let { ArticleBaseModel.fromEntity(it) }
-    }*/
     override suspend fun getNewsFromDb(): Flow<List<ArticleBaseModel>> {
-        return newsDao.getNews().map {news->
-            news.map{
+        return newsDao.getNews().map { news ->
+            news.map {
                 ArticleBaseModel.fromEntity(it)
             }
-            }
+        }
     }
 
     override suspend fun insertNewsToDb(newsList: List<NewsEntity>) {
@@ -59,7 +56,7 @@ class NewsRepositoryImpl @Inject constructor(
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
         val workRequest = PeriodicWorkRequest.Builder(
-            PeriodicFetchWorker::class.java, 15, TimeUnit.MINUTES
+            PeriodicFetchWorker::class.java, 4, TimeUnit.HOURS
         ).setConstraints(constraints).build()
         workManager.enqueueUniquePeriodicWork(
             "newsFetch",

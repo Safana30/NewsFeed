@@ -2,6 +2,7 @@ package com.example.newsfeed.data.worker
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -32,13 +33,19 @@ class PeriodicFetchWorker @AssistedInject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
+        Log.d("PeriodicFetchWorker", "Worker started")
+
         return try {
             val response = apiInterface.getNews(query = "tesla", from = fromDate)
             if (response.isSuccessful) {
                 val articles = response.body()?.articles ?: emptyList()
 
                 val entityList = articles.map { ArticleBaseModel.fromAPIModel(it).toEntity() }
+                Log.d("PeriodicFetchWorker", "Fetched ${entityList.size} items")
+
                 newsDao.insertNews(entityList)
+
+                Log.d("PeriodicFetchWorker", "Data inserted to DB")
 
                 Result.success()
             } else {

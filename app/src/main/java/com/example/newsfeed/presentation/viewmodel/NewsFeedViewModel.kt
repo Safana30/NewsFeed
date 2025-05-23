@@ -23,7 +23,7 @@ class NewsFeedViewModel @Inject constructor(
     private val connectivityObserver: NetworkConnectivityObserver,
 ): ViewModel() {
 
-    private val _newsData = MutableStateFlow<NewsScreenStates>(NewsScreenStates.ERROR("No Data Available"))
+    private val _newsData = MutableStateFlow<NewsScreenStates>(NewsScreenStates.LOADING)
     val newsData : StateFlow<NewsScreenStates> =_newsData.asStateFlow()
 
     private val _connectivityStatus: MutableStateFlow<ConnectivityObserver.Status> =
@@ -31,6 +31,7 @@ class NewsFeedViewModel @Inject constructor(
     val connectivityStatus: StateFlow<ConnectivityObserver.Status> =
         _connectivityStatus.asStateFlow()
     init {
+        loadOfflineNews()
         observeNetwork()
     }
 
@@ -46,6 +47,7 @@ class NewsFeedViewModel @Inject constructor(
                     else -> {
                         newsRepository.getNewsFromDb().collect { newsList ->
                             if (newsList.isNotEmpty()) {
+                                Log.d("viewmodel", "observeNetwork: $newsList")
                                 _newsData.value = NewsScreenStates.SUCCESS(newsList)
                             } else {
                                 _newsData.value = NewsScreenStates.ERROR("No offline data available")
@@ -57,9 +59,19 @@ class NewsFeedViewModel @Inject constructor(
         }
     }
 
+    private fun loadOfflineNews() {
+        viewModelScope.launch {
+            newsRepository.getNewsFromDb().collect { newsList ->
+                if (newsList.isNotEmpty()) {
+                    _newsData.value = NewsScreenStates.SUCCESS(newsList)
+                }
+            }
+        }
+    }
     private suspend fun getNews(){
         _newsData.value = NewsScreenStates.LOADING
         newsUseCase.getNews().collect{
+            Log.d("viewmodel", "observeNetwork: $it")
             _newsData.value = NewsScreenStates.SUCCESS(it)
         }
     }

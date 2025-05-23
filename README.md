@@ -1,7 +1,7 @@
 # 📰 NewsFeed App
 
-A modern Android News application built with Kotlin that fetches news articles from [NewsAPI.org](https://newsapi.org/), 
-supports offline access using Room, background sync via WorkManager clean MVVM architecture and Jetpack best practices.
+A modern Android News application built with Kotlin that fetches news articles from [NewsAPI.org](https://newsapi.org/), supports offline access using Room, background sync via WorkManager, and offers free and premium build flavors with clean MVVM architecture and Jetpack best practices.
+
 
 ## 📱 Features
 
@@ -11,6 +11,7 @@ supports offline access using Room, background sync via WorkManager clean MVVM a
 - Local caching using Room for offline access
 - Background syncing of news articles using WorkManager
 - Clean MVVM architecture with Hilt DI
+-  Distinct **free** and **premium** build flavors
 - Error states, retry options, loading indicators
 - Kotlin Coroutines and Flows for async operations
 - Safe navigation using Jetpack Navigation Component
@@ -76,6 +77,14 @@ Register for a free API key at https://newsapi.org
 NEWS_API_KEY="your_api_key_here"
 
 4.Build the Project
+
+📦 Build Flavors
+The project includes two flavors with different behaviors:
+Flavor	Features
+free	Limited articles, ads placeholder, "NewsFeed Free"
+premium	Full articles, no ads, "NewsFeed Pro"
+
+You can switch flavors via Build Variants in Android Studio.
 
 🔄 Background Sync
 Implemented with WorkManager

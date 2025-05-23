@@ -34,26 +34,32 @@ supports offline access using Room, background sync via WorkManager clean MVVM a
 
 ## 🧱 Project Structure
 
+```plaintext
+NewsFeed/
+├── data/                       # Data layer
+│   ├── api/                    # Retrofit interfaces for network calls
+│   ├── db/                     # Room database & DAO classes
+│   ├── repository/             # Repository implementations
+│   └── worker/                 # WorkManager background sync tasks
 │
-├── data/ # Data sources
-│ ├── api/ # Retrofit interfaces
-│ ├── db/ # Room database & DAOs
-│ └── repository/ 
-├── worker/ # WorkManager background sync
+├── domain/                     # Business logic layer
+│   ├── model/                  # Data models 
+│   ├── usecase/                # UseCases/Interactors
+│   └── repository/             # Abstract repository interfaces
 │
-├── di/ # Hilt modules
+├── di/                         # Hilt modules for dependency injection
 │
-├── domain/ # UseCases, Repositories (if abstracted)
+├── presentation/               # UI layer
+│   ├── newslist/               # News list screen components
+│   └── newsdetail/             # News detail screen components
 │
-├── presentation/ # UI (Activities/Composables/ViewModels)
-│ ├── newslist/ # News list screen
-│ └── newsdetail/ # News detail screen
+├── utils/                      # Utility classes, extensions, mappers
 │
-│
-├── utils/ # Utility classes and extensions
-│
-├── App.kt # Application class with Hilt
-└── MainActivity.kt # Host for NavController
+├── App.kt                      # Application class with @HiltAndroidApp
+├── MainActivity.kt             # Hosts NavHostController
+└── README.md                   # Project overview and documentation
+```
+
 
 
 ## 🚀 Getting Started

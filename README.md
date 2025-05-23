@@ -1,2 +1,2 @@
 # NewsFeed
- NewsFeed is a Jetpack Compose Android app that fetches paginated news from a public API, shows detailed articles, caches data locally with Room for offline use, updates news periodically in the background
+ NewsFeed is a Jetpack Compose Android app that fetches news articles from a public API and displays them in a scrollable list using LazyColumn for efficient loading. The app provides detailed views for individual articles, caches data locally using Room for offline access, and includes a background refresh mechanism to periodically update the news content. The app supports multiple build flavors (Free and Premium), showcasing feature differentiation.
